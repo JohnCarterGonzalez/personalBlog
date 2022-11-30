@@ -31,7 +31,7 @@
 							</div>
 							<div class="track">
 								<i class="uil uil-users-alt"></i>
-								<p class="view-count">2500+ views</p>
+                                <p class="view-count">{{post.view_count}} view{{post.view_count| pluralize }}</p>
 							</div>
 							<div class="track">
 								<form action="" method="POST">
@@ -121,8 +121,8 @@
 													are marked<span>*</span>
 												</p>
 												<form method="POST">
-													<textarea name="content" cols="40" rows="10" placeholder="Type your comment...." required id="id_content">
-	</textarea>
+                                                    <textarea name="content" cols="40" rows="10" placeholder="Type your comment...." required id="id_content">
+                                                    </textarea>
 													<div class="grid-3">
 														<input type="text" name="name" maxlength="200" placeholder="Name" required id="id_name">
 														<input type="text" name="email" maxlength="200" placeholder="Email" required id="id_email">
@@ -260,24 +260,27 @@
 								<!-- user comment end -->
 							</div>
 						</div>
+                        <!-- user comment form -->
 						<div class="comment-box">
 							<h3>Leave a new comment to this post</h3>
 							<p>
 								Your email address will not be published. Required fields
 								are marked<span>*</span>
 							</p>
-							<form action="">
-								<textarea placeholder="Type your comment...."></textarea>
+							<form action="POST">
+                                {%crsf_token%}
+                                {{form.content}}
 								<div class="grid-3">
-									<input type="text" placeholder="Name" />
-									<input type="temail" placeholder="Email" />
-									<input type="url" placeholder="Website (optional)" />
+                                {{form.name}}
+                                {{form.email}}
+                                {{form.website}}
 								</div>
 								<button class="btn btn-primary rounded">
 									Post comment
 								</button>
 							</form>
 						</div>
+                        <!-- user comment form end-->
 					</div>
 				</section>
 			</div>

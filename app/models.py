@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.contrib.auth.models import User
 
 # Tag Model
 class Tag(models.Model):
@@ -29,3 +30,13 @@ class Post(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     tags = models.ManyToManyField(Tag, blank=True, related_name="post")
     view_count = models.IntegerField(null=True, blank=True)
+
+class Comments(models.Model):
+    content = models.TextField()
+    date = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    website = models.CharField(max_length=100)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+
