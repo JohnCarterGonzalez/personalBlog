@@ -10,7 +10,7 @@ class Tag(models.Model):
 
 	"""
 	Override the default slug save method, if the slug is not specified
-	then create a slug using slugify. Save the new slug with return super()
+	then create a slug using slugify. Save the new slug with return super().save()
 	"""
 	def save(self, *args, **kwargs):
 		if not self.id:
@@ -39,4 +39,6 @@ class Comments(models.Model):
     website = models.CharField(max_length=100)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    # Link to the reply to the post, related_name specifies the replies against the comments queries
+    parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True, related_name='replies')
 
