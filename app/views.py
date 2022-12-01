@@ -7,7 +7,9 @@ from django.urls import reverse
 # Create your views here.
 def index(request):
     posts = Post.objects.all()
-    context = {'posts': posts}
+    top_posts = Post.objects.all().order_by('-view_count')[0:3]
+    recent_posts = Post.objects.all().order_by('-last_modified')[0:3]
+    context = {'posts': posts, 'top_posts': top_posts, 'recent_posts': recent_posts}
     return render(request, 'app/index.html', context)
 
 # Per individual Post page
