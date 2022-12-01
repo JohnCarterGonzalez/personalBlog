@@ -1,5 +1,5 @@
 from django import forms
-from app.models import Comments
+from app.models import Comments, Subscribe
 
 class CommentForm(forms.ModelForm):
     class Meta:
@@ -13,3 +13,7 @@ class CommentForm(forms.ModelForm):
         self.fields['email'].widget.attrs['placeholder'] = "Email"
         self.fields['website'].widget.attrs['placeholder'] = "Website"
 
+class SubscribeForm(forms.ModelForm):
+    class Meta:
+        model=Subscribe
+        fields='__all__'
