@@ -58,7 +58,7 @@ def post_page(request, slug):
                 postid = request.POST.get('post_id')
                 post = Post.objects.get(id = postid)
                 comment.post = post # Logic to connect the comment to the post
-                comment.save() # Now save to the sb
+                comment.save() # Now save to the db
                 # Keep the comments from submitting with page refresh
                 return HttpResponseRedirect(reverse('post_page', kwargs={'slug': slug}))
 
