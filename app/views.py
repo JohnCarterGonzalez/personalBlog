@@ -14,12 +14,14 @@ def index(request):
     subscribe_success = None
 
     # Methods
-    if request.method == 'POST':
+    if request.POST:
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
             subscribe_form.save()
             subscribe_success = 'Subscribed Successfully!'
-            context = {
+            subscribe_form = SubscribeForm() # Reset the form if successful
+
+    context = {
                 'posts': posts,
                 'top_posts': top_posts,
                 'recent_posts': recent_posts,
@@ -45,7 +47,7 @@ def post_page(request, slug):
             if request.POST.get('parent'):
                 # save reply
                 parent = request.POST.get('parent')
-                # Get the parent obj(id) from the db and compare to the curr parent 
+                # Get the parent obj(id) from the db and compare to the curr parent
                 parent_object = Comments.objects.get(id=parent)
                 if parent_object: # If valid parent:
                     comment_reply = comment_form.save(commit=False)
