@@ -28,13 +28,15 @@ class Tag(models.Model):
 
 # Post Model
 class Post(models.Model):
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    last_modified = models.DateTimeField(auto_now_add=True)
-    slug = models.SlugField(max_length=200, unique=True)
-    image = models.ImageField(null=True, blank=True, upload_to="images/")
-    tags = models.ManyToManyField(Tag, blank=True, related_name="post")
-    view_count = models.IntegerField(null=True, blank=True)
+	title = models.CharField(max_length=200)
+	content = models.TextField()
+	last_modified = models.DateTimeField(auto_now_add=True)
+	slug = models.SlugField(max_length=200, unique=True)
+	image = models.ImageField(null=True, blank=True, upload_to="images/")
+	tags = models.ManyToManyField(Tag, blank=True, related_name="post")
+	view_count = models.IntegerField(null=True, blank=True)
+	is_featured = models.BooleanField(default=False)
+	author = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE)
 
 class Comments(models.Model):
     content = models.TextField()
@@ -46,4 +48,3 @@ class Comments(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     # Link to the reply to the post, related_name specifies the replies against the comments queries
     parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True, related_name='replies')
-

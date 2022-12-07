@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from app.models import Post, Comments
+from app.models import Post, Comments, Tag
 from app.forms import CommentForm, SubscribeForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -10,10 +10,15 @@ def index(request):
     posts = Post.objects.all()
     top_posts = Post.objects.all().order_by('-view_count')[0:3]
     recent_posts = Post.objects.all().order_by('-last_modified')[0:3]
+    featured_posts = Post.objects.filter(is_featured=True)
     subscribe_form = SubscribeForm()
     subscribe_success = None
 
     # Methods
+    """
+    For the user, if the request is POST and valid, then save the email to th e
+    db and reset the form.
+    """
     if request.POST:
         subscribe_form = SubscribeForm(request.POST)
         if subscribe_form.is_valid():
@@ -21,12 +26,21 @@ def index(request):
             subscribe_success = 'Subscribed Successfully!'
             subscribe_form = SubscribeForm() # Reset the form if successful
 
+    """
+    If there are mutiple featured posts competing for the top spot then take
+    first in the list. Essentially, featured_posts is not an object but a query
+    set, thus the need to filter.
+    """
+    if featured_posts:
+        featured_posts = featured_posts[0]
+
     context = {
                 'posts': posts,
                 'top_posts': top_posts,
                 'recent_posts': recent_posts,
                 'subscribe_form': subscribe_form,
-                'subscribe_success': subscribe_success
+                'subscribe_success': subscribe_success,
+                'featured_posts': featured_posts
             }
     return render(request, 'app/index.html', context)
 
@@ -73,3 +87,19 @@ def post_page(request, slug):
     post.save()
     context = {'post': post, 'form': form, 'comments': comments}
     return render(request, 'app/post.html', context)
+
+# Define the Tag Page
+def tag_page(request, slug):
+	# Objects
+	tag = Tag.objects.get(slug=slug)
+	tags = Tag.objects.all()
+
+	# Filter the top_posts and the recent_posts for frontend view
+	top_posts = Post.objects.filter(tags__in=[tag.id]).order_by('-view_count')[0:2]
+	recent_posts = Post.objects.filter(tags__in=[tag.id]).order_by('-last_modified')[0:2]
+
+	context = {'tag': tag,
+			   'top_posts': top_posts,
+			   'recent_posts': recent_posts,
+			   'tags': tags}
+	return render(request, 'app/tag.html', context)
