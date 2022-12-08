@@ -2,6 +2,27 @@ from django.db import models
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 
+# Profile for Authors
+class Profile(models.Model):
+# users have one profle and a profile has one user
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    slug = models.SlugField(max_length=200, unique=True)
+    profile_bio = models.CharField(max_length=200)
+
+    """
+    Override the default slug save method, if the slug is not specified
+    then create a slug using slugify. Save the new slug with return super().save()
+    """
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.user.username)
+        return super(Profile, self).save(*args, **kwargs)
+
+# Return a string representation of the slug
+    def __str__(self):
+        return self.user.first_name
+
 # Class Subscribe
 class Subscribe(models.Model):
     email = models.EmailField(max_length=100)
