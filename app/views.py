@@ -1,8 +1,10 @@
-from django.shortcuts import render
-from app.models import Post, Comments, Tag
-from app.forms import CommentForm, SubscribeForm
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
+
+from app.forms import CommentForm, SubscribeForm
+from app.models import Comments, Post, Tag
+
 
 # Create your views here.
 def index(request):
