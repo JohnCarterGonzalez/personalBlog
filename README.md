@@ -1,5 +1,5 @@
 # personalBlog
-* TODO: 
+TODO: 
 
 - update README to include screenshots
 - research the effectiveness of asyncio for API channels, not convinced coroutines will speed up
