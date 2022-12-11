@@ -1,9 +1,11 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.db.models import Count
 
 from app.forms import CommentForm, SubscribeForm
-from app.models import Comments, Post, Tag
+from app.models import Comments, Post, Tag, Profile
 
 
 # Create your views here.
@@ -75,8 +77,8 @@ def post_page(request, slug):
                 comment = comment_form.save(commit=False) # Dont save right away in db
                 postid = request.POST.get('post_id')
                 post = Post.objects.get(id = postid)
-                comment.post = post # Logic to connect the comment to the post
-                comment.save() # Now save to the db
+                comment.post = post  # Logic to connect the comment to the post
+                comment.save()  # Now save to the db
                 # Keep the comments from submitting with page refresh
                 return HttpResponseRedirect(reverse('post_page', kwargs={'slug': slug}))
 
@@ -100,8 +102,22 @@ def tag_page(request, slug):
 	top_posts = Post.objects.filter(tags__in=[tag.id]).order_by('-view_count')[0:2]
 	recent_posts = Post.objects.filter(tags__in=[tag.id]).order_by('-last_modified')[0:2]
 
-	context = {'tag': tag,
-			   'top_posts': top_posts,
-			   'recent_posts': recent_posts,
-			   'tags': tags}
+	context = {
+                'tag': tag,
+			    'top_posts': top_posts,
+			    'recent_posts': recent_posts,
+			    'tags': tags}
 	return render(request, 'app/tag.html', context)
+
+# Define the Bio section for Authors page 
+def author_page(request, slug):
+    profile = Profile.objects.get(slug=slug)
+
+    # Filter the top_posts and the recent_posts for frontend view
+    top_posts = Post.objects.filter(author = profile.user).order_by('-view_count')[0:2]
+    recent_posts = Post.objects.filter(author = profile.user).order_by('-last_modified')[0:2]
+    top_authors = User.objects.annotate(number=Count('post')).order_by('number')
+
+    context = {'profile': profile, 'top_posts': top_posts, 'recent_posts': recent_posts, 'top_authors': top_authors}
+    return render(request, 'app/author.html', context)
+

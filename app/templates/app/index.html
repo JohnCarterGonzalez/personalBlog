@@ -30,8 +30,8 @@
       </div>
     </main>
     <!-- Featured Post Section --> 
-    {% if featured_posts %}
     <section class="sp">
+    {% if featured_posts %}
       <div class="container">
           <a href="{% url 'post_page' featured_posts.slug %}">
         <div class="grid-2">
@@ -55,8 +55,8 @@
         </div>
           </a>
       </div>
-    </section>
     {% endif %}
+    </section>
     <!-- Top Posts Section -->
     <section class="sp">
       <div class="container">
