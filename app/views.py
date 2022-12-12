@@ -143,6 +143,7 @@ def search_page(request):
     posts = Post.objects.filter(title__icontains=search_query)
     print('Search: ', search_query)
     context = {
-        'posts': posts
+        'posts': posts,
+        'search_query': search_query
     }
     return render(request, 'app/search.html', context)
