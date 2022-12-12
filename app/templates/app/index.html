@@ -11,10 +11,20 @@
             </a>
           </div>
           <div class="typo">
+            {% if website_info.title %}
+                <h1 class="title">{{website_info.title}}</h1>
+            {% else %}
             <h1 class="title">Join a Developing Journey</h1>
+            {% endif %}
+            {% if website_info.description %}
+            <p>
+                {{website_info.description}}
+            </p>
+            {% else %}
             <p>
               Join my newsletter to receive updates in your email. 
             </p>
+            {% endif %}
           </div>
           <div class="newsletter">
             <form method="POST">

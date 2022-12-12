@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 
 from app.forms import CommentForm, SubscribeForm
-from app.models import Comments, Post, Tag, Profile
+from app.models import *
 
 
 # Create your views here.
@@ -17,7 +17,7 @@ def index(request):
     featured_posts = Post.objects.filter(is_featured=True)
     subscribe_form = SubscribeForm()
     subscribe_success = None
-
+    website_info = None
     # Methods
     """
     For the user, if the request is POST and valid, then save the email to th e
@@ -38,13 +38,21 @@ def index(request):
     if featured_posts:
         featured_posts = featured_posts[0]
 
+    """
+    First check to see if the WebsiteMeta exists, we dont want a crash simply
+    b/c of being absentminded. lets handle that here.
+    """
+    if WebsiteMeta.objects.exists():
+        website_info = WebsiteMeta.objects.all()[0]
+
     context = {
                 'posts': posts,
                 'top_posts': top_posts,
                 'recent_posts': recent_posts,
                 'subscribe_form': subscribe_form,
                 'subscribe_success': subscribe_success,
-                'featured_posts': featured_posts
+                'featured_posts': featured_posts,
+                'website_info': website_info
             }
     return render(request, 'app/index.html', context)
 
