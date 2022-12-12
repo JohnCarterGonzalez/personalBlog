@@ -27,13 +27,13 @@
   <body>
     <header>
       <div class="container container-fluid">
-        <div class="logo">
-          <i class="fa-brands fa-blogger"></i>
-        </div>
+        <a class="logo" href="{% url 'index' %}">
+            <i class="fa-brands fa-blogger"></i>
+        </a>
         <div class="links">
             <a href="{% url 'index' %}">Home</a>
           <a href="{% url 'search_page' %}">Blog</a>
-          <a href="pages/author.html">About</a>
+          <a href="{% url 'about_page' %}">About</a>
         </div>
         <div class="action-btn">
           <a href="pages/login.html"
@@ -53,14 +53,14 @@
     <footer>
       <div class="container">
         <div class="grid-4">
-          <div class="logo f-logo">
-            <i class="fa-brands fa-blogger"></i>
-          </div>
+            <a class="logo f-logo" href="{% url 'index' %}">
+                <i class="fa-brands fa-blogger"></i>
+            </a>
           <div class="link">
             <h2>Quick link</h2>
             <div class="q-link">
-              <a href="#">Home</a>
-              <a href="#">Blog</a>
+                <a href="{% url 'index' %}">Home</a>
+                <a href="{% url 'about_page' %}">About</a>
               <a href="#">Unsubscribe</a>
             </div>
           </div>

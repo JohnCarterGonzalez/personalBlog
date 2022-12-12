@@ -155,3 +155,18 @@ def search_page(request):
         'search_query': search_query
     }
     return render(request, 'app/search.html', context)
+
+def about_page(request):
+    website_info = None
+
+    """
+    First check to see if the WebsiteMeta exists, we dont want a crash simply
+    b/c of being absentminded. lets handle that here.
+    """
+    if WebsiteMeta.objects.exists():
+        website_info = WebsiteMeta.objects.all()[0]
+
+    context={
+			'website_info': website_info
+			}
+    return render(request, 'app/about.html', context)

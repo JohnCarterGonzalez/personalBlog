@@ -19,8 +19,8 @@
             <center>
               <div class="typo">
                   <h1 class="title">{{profile.user.first_name}}</h1>
-                <p>
-                    {{profile.profile_bio}}
+                <p class="blog-bio-format">
+                    {{profile.profile_bio | safe }}
                     A bio goes here.....Lorem Ipsum is simply dummy text of the 
                     printing and typesetting industry. Lorem Ipsum has been the 
                     industry's standard dummy text ever since the 1500s, when 
@@ -54,7 +54,8 @@
                         </h3>
                         <div class="author">
                           <div class="profile-pic">
-                            <img src="{{post.author.profile.profile_image.url}}" alt="" />
+                            <img src="{{post.author.profile.profile_image.url}}" 
+                            alt="author_img" />
                           </div>
                           <div class="details">
                             <p>{{post.author.first_name}}</p>

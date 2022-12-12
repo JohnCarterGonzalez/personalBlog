@@ -629,6 +629,12 @@ footer .container {
   margin-top: 3rem;
 }
 
+.blog-bio-format {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
+}
+
 .user-comment {
   margin-top: 5rem;
 }
@@ -911,6 +917,11 @@ p a {
 .reply-box button {
   width: 40%;
   margin: 0rem !important;
+}
+.about-format {
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
 }
 main {
   padding-top: 10rem !important;
