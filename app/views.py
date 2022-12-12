@@ -52,8 +52,12 @@ def index(request):
 def post_page(request, slug):
     # Variables
     post = Post.objects.get(slug=slug)
+    top_posts = Post.objects.all().order_by('-view_count')[0:3]
+    recent_posts = Post.objects.all().order_by('-last_modified')[0:3]
     form = CommentForm()
     comments = Comments.objects.filter(post=post, parent=None)
+    # tag = Tag.objects.get(slug=slug)
+    # top_related_posts = Post.objects.filter(tags__in=[tag.id]).order_by('-view_count')[0:2]
 
     #Methods
     # If a user makes a comment to a post
@@ -89,7 +93,15 @@ def post_page(request, slug):
     else:
         post.view_count = post.view_count + 1
     post.save()
-    context = {'post': post, 'form': form, 'comments': comments}
+    context = {
+        'post': post,
+        'form': form,
+        'comments': comments,
+        'top_posts': top_posts,
+        'recent_posts': recent_posts,
+        #'tag': tag,
+        #'top_related_posts': top_related_posts,
+    }
     return render(request, 'app/post.html', context)
 
 # Define the Tag Page
@@ -116,8 +128,21 @@ def author_page(request, slug):
     # Filter the top_posts and the recent_posts for frontend view
     top_posts = Post.objects.filter(author = profile.user).order_by('-view_count')[0:2]
     recent_posts = Post.objects.filter(author = profile.user).order_by('-last_modified')[0:2]
-    top_authors = User.objects.annotate(number=Count('post')).order_by('number')
+    # For the possibility of a side bar, not yet implemented.
+    # top_authors = User.objects.annotate(number=Count('post')).order_by('number')
 
-    context = {'profile': profile, 'top_posts': top_posts, 'recent_posts': recent_posts, 'top_authors': top_authors}
+    context = {'profile': profile, 'top_posts': top_posts, 'recent_posts': recent_posts}
     return render(request, 'app/author.html', context)
 
+def search_page(request):
+    search_query = ''
+    # If the request has the param q, if so then get th evalue of q
+    # q is the text entered in the search box 
+    if request.GET.get('q'):
+        search_query = request.GET.get('q')
+    posts = Post.objects.filter(title__icontains=search_query)
+    print('Search: ', search_query)
+    context = {
+        'posts': posts
+    }
+    return render(request, 'app/search.html', context)
