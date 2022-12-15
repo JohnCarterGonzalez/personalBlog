@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.db.models import Count
 
-from app.forms import CommentForm, SubscribeForm
+from app.forms import *
 from app.models import *
 
 
